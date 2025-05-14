@@ -1,0 +1,5 @@
+*/*/input.txt
+*/*/target/
+/.direnv/
+/SESSION
+rust/target/
