@@ -5,7 +5,7 @@ def "main first" [] {
 }
 
 def "main second" [] {
-  prepare-input
+  null
 }
 
 def prepare-input [] {
