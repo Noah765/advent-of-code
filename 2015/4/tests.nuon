@@ -1,0 +1,4 @@
+{
+  inputs: ['abcdef' 'pqrstuv']
+  outputs: [[first second]; [609043 null] [1048970 null]]
+}
