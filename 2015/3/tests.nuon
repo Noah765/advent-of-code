@@ -1,0 +1,4 @@
+{
+  inputs: ['>' '^>v<' '^v^v^v^v^v' '^v']
+  outputs: [[first second]; [2 null] [4 3] [2 11] [null 3]]
+}
