@@ -16,11 +16,11 @@ def prepare-input [] {
 const rust_script_template = 'use serde::Serialize;
 
 fn main() {
-    advent_of_code::run(first, second);
+  advent_of_code::run(first, second);
 }
 
 fn first(input: String) -> impl Serialize {
-    
+  
 }
 
 #[allow(unused_variables)]
