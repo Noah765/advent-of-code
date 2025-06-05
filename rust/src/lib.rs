@@ -1,6 +1,7 @@
 use std::{
   env, fs,
   io::{self, Read},
+  time::Instant,
 };
 
 use serde::Serialize;
@@ -15,9 +16,18 @@ where
   let mut input = String::new();
   io::stdin().read_to_string(&mut input).expect("stdin should contain valid UTF8");
   let args: Vec<_> = env::args().collect();
+
+  let start = Instant::now();
+
   match &args[1][..] {
-    "first" => write_result(&args[2], first(input)),
-    "second" => write_result(&args[2], second(input)),
+    "first" => {
+      let result = first(input);
+      write_result(&args[2], (start.elapsed(), result));
+    }
+    "second" => {
+      let result = second(input);
+      write_result(&args[2], (start.elapsed(), result));
+    }
     _ => panic!(r#"the first arg should be either "first" or "second""#),
   };
 }

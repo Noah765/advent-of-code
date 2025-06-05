@@ -359,12 +359,18 @@ def run-nu-script [path puzzle input rounds result_file --collect-log] {
 def run-rust-script [path rust_binary puzzle input rounds result_file --collect-log] {
   mut results = []
   for _ in 1..$rounds {
-    let start = date now
     let log = if $collect_log { $input | ^$rust_binary $puzzle $result_file o+e>| collect } else { $input | try { ^$rust_binary $puzzle $result_file }; '' }
-    let end = date now
-    let result = if not ($result_file | path exists) { {type: 'error' value: $log log: ''} } else { try-open-nuon $result_file | insert log $log }
-    $results ++= [{time: ($end - $start) ...$result}]
-    if $result.type == 'error' { break }
+    if not ($result_file | path exists) {
+      $results ++= [{time: 0ns type: 'error' value: $log log: ''}]
+      break
+    }
+    let result = try-open-nuon $result_file
+    if $result.type == 'error' {
+      $results ++= [{time: 0ns ...$result log: $log}]
+      break
+    }
+    let time = {second: ($result.value.0.secs? | default 0) nanosecond: ($result.value.0.nanos? | default 0)} | into duration
+    $results ++= [{time: $time type: 'success' value: $result.value.1 log: $log}]
   }
   if ($results | last | get type) == 'error' { return ($results | last) }
 
