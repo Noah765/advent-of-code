@@ -1,0 +1,9 @@
+{
+  inputs: [
+    '""
+"abc"
+"aaa\"aaa"
+"\x27"'
+  ]
+  outputs: [[first second]; [12 19]]
+}
