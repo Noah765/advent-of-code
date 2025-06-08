@@ -1,0 +1,4 @@
+{
+  inputs: ['1']
+  outputs: [[first second]; [82350 1166642]]
+}
