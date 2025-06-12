@@ -1,0 +1,4 @@
+{
+  inputs: ['abcdefgh' 'ghijklmn']
+  outputs: [[first second]; ['abcdffaa' null] ['ghjaabcc' null]]
+}
