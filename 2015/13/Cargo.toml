@@ -1,0 +1,7 @@
+[package]
+name = "advent-of-code-2015-13"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+advent-of-code.workspace = true
