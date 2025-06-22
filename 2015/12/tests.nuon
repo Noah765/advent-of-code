@@ -1,0 +1,4 @@
+{
+  inputs: ['[1,2,3]' '{"a":2,"b":4}' '[[[3]]]' '{"a":{"b":4},"c":-1}' '[]' '{}' '[1,{"c":"red","b":2},3]' '{"d":"red","e":[1,2,3,4],"f":5}' '[1,"red",5]']
+  outputs: [[first second]; [6 6] [6 null] [3 null] [3 null] [0 null] [0 null] [null 4] [null 0] [null 6]]
+}
