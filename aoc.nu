@@ -205,7 +205,7 @@ def prepare-input [year? day? puzzle? rounds? test? --year-span: any --day-span:
   }
   check-parameter 'year' $year $year_span $possible_years
   let year = match [$generate $year $day] {
-    [true null null] => ($latest_date.year..2015 | filter {|x| ($existing_puzzles | where year == $x | length) < (if $x == $latest_date.year { $latest_date.day } else { 25 }) } | get 0? | default $latest_date.year)
+    [true null null] => ($latest_date.year..2015 | where {|x| ($existing_puzzles | where year == $x | length) < (if $x == $latest_date.year { $latest_date.day } else { 25 }) } | get 0? | default $latest_date.year)
     [false null null] => ($possible_years | last)
     [true null _] => ($latest_date.year..2015 | where ($it != $latest_date.year or $day <= $latest_date.day) and ({year: $it day: $day} not-in $existing_puzzles) | get 0? | default $latest_date.year)
     [false null _] => ($existing_puzzles | reverse | where day == $day | get 0?.year | default $latest_date.year)

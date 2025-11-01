@@ -1,21 +1,24 @@
 {
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-  outputs = {nixpkgs, ...}: let
-    inherit (nixpkgs) lib legacyPackages;
-    forAllSystems = lib.genAttrs lib.systems.flakeExposed;
-    buildAoc = pkgs:
-      pkgs.writers.writeNuBin "aoc" {
-        check = ''${lib.getExe pkgs.nushell} --commands "nu-check --debug $out"'';
-        makeWrapperArgs = ["--prefix PATH : ${lib.makeBinPath (with pkgs; [cargo nushell])}"];
-      }
-      ./aoc.nu;
+  outputs = {
+    self,
+    nixpkgs,
+    ...
+  }: let
+    inherit (nixpkgs.lib) genAttrs getExe makeBinPath mapAttrs systems;
+    forAllSystems = f: mapAttrs f (genAttrs systems.flakeExposed (x: nixpkgs.legacyPackages.${x}));
   in {
-    devShells = forAllSystems (x: {default = legacyPackages.${x}.mkShell {packages = with legacyPackages.${x}; [cargo clippy nushell rustc rustfmt (buildAoc legacyPackages.${x})];};});
-    packages = forAllSystems (x: rec {
-      aoc = buildAoc legacyPackages.${x};
+    devShells = forAllSystems (system: pkgs: {default = pkgs.mkShell {packages = [pkgs.alejandra pkgs.rustfmt self.packages.${system}.aoc];};});
+    packages = forAllSystems (_: pkgs: rec {
+      aoc =
+        pkgs.writers.writeNuBin "aoc" {
+          check = ''${getExe pkgs.nushell} --commands "nu-check --debug $out"'';
+          makeWrapperArgs = ["--prefix PATH : ${makeBinPath [pkgs.cargo pkgs.nushell]}"];
+        }
+        ./aoc.nu;
       default = aoc;
     });
-    formatter = forAllSystems (x: legacyPackages.${x}.alejandra);
+    formatter = forAllSystems (_: pkgs: pkgs.alejandra);
   };
 }
