@@ -1,0 +1,8 @@
+[package]
+name = "advent-of-code-2025-4"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+advent-of-code = { version = "1.0.0", path = "../../rust" }
+serde = "1.0.228"
