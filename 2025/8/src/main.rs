@@ -14,7 +14,7 @@ fn first(input: String) -> usize {
   circuit_sizes.into_iter().rev().take(3).product()
 }
 
-fn second(input: String) -> i64 {
+fn second(input: String) -> u64 {
   let boxes = parse_boxes(&input);
 
   let mut box_pairs = construct_sorted_box_pairs(&boxes).into_iter();
@@ -30,7 +30,7 @@ fn second(input: String) -> i64 {
   boxes[i].0 * boxes[j].0
 }
 
-fn parse_boxes(input: &str) -> Vec<(i64, i64, i64)> {
+fn parse_boxes(input: &str) -> Vec<(u64, u64, u64)> {
   input
     .lines()
     .map(|x| {
@@ -40,9 +40,9 @@ fn parse_boxes(input: &str) -> Vec<(i64, i64, i64)> {
     .collect()
 }
 
-fn construct_sorted_box_pairs(boxes: &Vec<(i64, i64, i64)>) -> Vec<(usize, usize)> {
+fn construct_sorted_box_pairs(boxes: &Vec<(u64, u64, u64)>) -> Vec<(usize, usize)> {
   let mut pairs: Vec<_> = (0..boxes.len()).flat_map(|i| (i + 1..boxes.len()).map(move |j| (i, j))).collect();
-  pairs.sort_unstable_by_key(|&(i, j)| (boxes[i].0 - boxes[j].0).pow(2) + (boxes[i].1 - boxes[j].1).pow(2) + (boxes[i].2 - boxes[j].2).pow(2));
+  pairs.sort_unstable_by_key(|&(i, j)| boxes[i].0.abs_diff(boxes[j].0).pow(2) + boxes[i].1.abs_diff(boxes[j].1).pow(2) + boxes[i].2.abs_diff(boxes[j].2).pow(2));
   pairs
 }
 
