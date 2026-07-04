@@ -9,7 +9,7 @@ def "main second" [] {
 }
 
 def prepare-input [] {
-  
+
 }
 '
 
@@ -20,7 +20,7 @@ fn main() {
 }
 
 fn first(input: String) -> impl Serialize {
-  
+
 }
 
 #[allow(unused_variables)]
@@ -247,13 +247,10 @@ def prepare-input [year? day? puzzle? rounds? test? --year-span: any --day-span:
     $result.value
   }
 
-  let is_wrong_type = ($raw_tests | describe) !~ '^record<inputs: list<(string|any)>, outputs: (list<any>|table<first: [^,>]+, second: [^,>]+>)>$'
-  let is_wrong_inputs_type = $is_wrong_type or ($raw_tests.inputs | describe) == 'list<any>' and $raw_tests.inputs != []
-  let is_wrong_outputs_type = $is_wrong_type or ($raw_tests.outputs | describe) == 'list<any>' and $raw_tests.outputs != [] and ($raw_tests.outputs | columns) != ['first' 'second']
-  if $is_wrong_inputs_type or $is_wrong_outputs_type {
+  if ($raw_tests | describe) !~ '^record<inputs: list<string>, outputs: table<first: (nothing|int|oneof<(nothing, int|int, nothing)>), second: (nothing|int|oneof<(nothing, int|int, nothing)>)>>$' {
     error make --unspanned {
       msg: $"The type of '($path)/tests.nuon' is incorrect"
-      help: $"Expected 'record<inputs: list<string>, outputs: table<first: any, second: any>>' but got: '($raw_tests | describe)'"
+      help: $"Expected 'record<inputs: list<string>, outputs: table<first: oneof<nothing, int>, second: oneof<nothing, int>>>' but got: '($raw_tests | describe)'"
     }
   }
 
