@@ -310,7 +310,7 @@ def run-tests [path rust_binary puzzle --test: any --test-span: any] {
 }
 
 def run-script [path rust_binary puzzle input --rounds: int = 1 --collect-log] {
-  let result_file = mktemp --tmpdir 'aoc-run-result.nuon.XXXXX'
+  let result_file = mktemp --tmpdir 'aoc-run-result.nuon.XXX'
   rm $result_file
   let result = match $rust_binary {
     null => (run-nu-script $path $puzzle $input $rounds $result_file --collect-log=$collect_log)
