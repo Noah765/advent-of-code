@@ -240,10 +240,10 @@ def prepare-input [year? day? puzzle? rounds? test? --year-span: any --day-span:
     $result.value
   }
 
-  if ($raw_tests | describe) !~ '^record<inputs: list<string>, outputs: table<first: (nothing|int|oneof<(nothing, int|int, nothing)>), second: (nothing|int|oneof<(nothing, int|int, nothing)>)>>$' {
+  if ($raw_tests | describe) !~ '^record<inputs: list<string>, outputs: table<first: (nothing|int|string|oneof<((nothing|int|string)(, )?)+>), second: (nothing|int|string|oneof<((nothing|int|string)(, )?)+>)>>$' {
     error make --unspanned {
       msg: $"The type of '($path)/tests.nuon' is incorrect"
-      help: $"Expected 'record<inputs: list<string>, outputs: table<first: oneof<nothing, int>, second: oneof<nothing, int>>>' but got: '($raw_tests | describe)'"
+      help: $"Expected 'record<inputs: list<string>, outputs: table<first: oneof<nothing, int, string>, second: oneof<nothing, int, string>>>' but got: '($raw_tests | describe)'"
     }
   }
 
