@@ -42,7 +42,7 @@ def "main generate" [
   --rust (-r)
 ]: nothing -> nothing {
   let date = prepare-input $year $day --year-span (metadata $year).span --day-span (metadata $day).span --generate
-  let path = $'($date.year)/($date.day)'
+  let path = $'($date.year)/($date.day | fill --width 2 --alignment 'right' --character '0')'
 
   let previous_fs_entries = glob $'($path)/**'
 
@@ -127,7 +127,7 @@ def main [
     --year-span (metadata $year).span --day-span (metadata $day).span --puzzle-span (metadata $puzzle).span --rounds-span (metadata $rounds).span --test-span (metadata $test).span
     --only-tests=$only_tests --no-tests=$no_tests
   )
-  let path = $'($date.year)/($date.day)'
+  let path = $'($date.year)/($date.day | fill --width 2 --alignment 'right' --character '0')'
 
   let rust_binary = if ($'($path)/src/main.rs' | path exists) {
     cd $path
@@ -220,7 +220,7 @@ def prepare-input [year? day? puzzle? rounds? test? --year-span: any --day-span:
     _ => $day
   }
 
-  let path = $'($year)/($day)'
+  let path = $'($year)/($day | fill --width 2 --alignment 'right' --character '0')'
 
   if ($'($path)/script.nu' | path type) == 'file' and ($'($path)/src/main.rs' | path type) == 'file' {
     error make --unspanned {
