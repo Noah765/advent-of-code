@@ -13,18 +13,15 @@ def prepare-input [] {
 }
 '
 
-const rust_script_template = 'use serde::Serialize;
-
-fn main() {
-  advent_of_code::run(first, second);
-}
-
-fn first(input: String) -> impl Serialize {
-
+const rust_script_template = 'fn main() {
+    advent_of_code::run(first, second);
 }
 
 #[allow(unused_variables)]
-fn second(input: String) -> impl Serialize {}
+fn first(input: String) {}
+
+#[allow(unused_variables)]
+fn second(input: String) {}
 '
 
 const tests_template = "{
@@ -88,11 +85,9 @@ def "main generate" [
     match $script_file {
       null if $rust => {
         cargo init $path --name $'advent-of-code-($date.year)-($date.day)'
-        cd $path
-        cargo add --path '../../rust'
-        cargo add 'serde'
-        cd '../..'
+        cargo add --package $'advent-of-code-($date.year)-($date.day)' 'advent-of-code'
         $rust_script_template | save --force $'($path)/src/main.rs'
+        print ''
       }
       null => ($nu_script_template | save $'($path)/script.nu')
       _ => (print --stderr $"(ansi yellow_bold)Warning:(ansi reset) Script generation was skipped because the file '($script_file)' already exists")
@@ -130,11 +125,9 @@ def main [
   let path = $'($date.year)/($date.day | fill --width 2 --alignment 'right' --character '0')'
 
   let rust_binary = if ($'($path)/src/main.rs' | path exists) {
-    cd $path
-    cargo build --release
-    cd '../..'
+    cargo build --package $'advent-of-code-($date.year)-($date.day)' --release
     print ''
-    $'($path)/target/release/(open $'($path)/Cargo.toml' | get package.name)'
+    $'target/release/advent-of-code-($date.year)-($date.day)'
   }
 
   if not $no_tests { run-tests $path $rust_binary $puzzle --test $test --test-span (metadata $test).span }
