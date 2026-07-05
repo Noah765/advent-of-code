@@ -76,7 +76,7 @@ fn generate_button_subsets(buttons: &[Vec<usize>], state_length: usize) -> Vec<(
     subsets.extend_from_within(..);
     subsets
         .index_mut(..subsets.len() / 2)
-        .into_iter()
+        .iter_mut()
         .for_each(|(cost, presses)| {
             *cost += 1;
             buttons[0].iter().for_each(|&i| presses[i] += 1);
@@ -86,7 +86,7 @@ fn generate_button_subsets(buttons: &[Vec<usize>], state_length: usize) -> Vec<(
 }
 
 fn calculate_minimum_button_presses(
-    joltages: &Vec<u16>,
+    joltages: &[u16],
     button_subsets: &Vec<(u16, Vec<u16>)>,
 ) -> Option<u16> {
     if joltages.iter().all(|&x| x == 0) {
@@ -97,7 +97,7 @@ fn calculate_minimum_button_presses(
         .iter()
         .filter(|(_, x)| (0..x.len()).all(|i| joltages[i] >= x[i] && x[i] % 2 == joltages[i] % 2))
         .filter_map(|(cost, presses)| {
-            let state = (0..joltages.len())
+            let state: Vec<u16> = (0..joltages.len())
                 .map(|i| (joltages[i] - presses[i]) / 2)
                 .collect();
             calculate_minimum_button_presses(&state, button_subsets).map(|x| cost + 2 * x)

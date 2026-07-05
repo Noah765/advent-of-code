@@ -47,7 +47,7 @@ fn parse_boxes(input: &str) -> Vec<(u64, u64, u64)> {
         .collect()
 }
 
-fn construct_sorted_box_pairs(boxes: &Vec<(u64, u64, u64)>) -> Vec<(usize, usize)> {
+fn construct_sorted_box_pairs(boxes: &[(u64, u64, u64)]) -> Vec<(usize, usize)> {
     let mut pairs: Vec<_> = (0..boxes.len())
         .flat_map(|i| (i + 1..boxes.len()).map(move |j| (i, j)))
         .collect();

@@ -67,7 +67,7 @@ type Gates<'a> = HashMap<&'a str, Rc<RefCell<Gate<'a>>>>;
 type EvaluableGates<'a> = Vec<Rc<RefCell<Gate<'a>>>>;
 type GateOutputs<'a> = HashMap<&'a str, Vec<GateOutput<'a>>>;
 
-fn construct_circuit(input: &str) -> EvaluableGates {
+fn construct_circuit(input: &str) -> EvaluableGates<'_> {
     let mut gates: Gates = HashMap::new();
     let mut evaluable_gates: EvaluableGates = Vec::new();
     let mut gate_outputs: GateOutputs = HashMap::new();

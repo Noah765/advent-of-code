@@ -42,22 +42,21 @@ fn construct_grid(input: &str) -> Vec<Vec<Cell>> {
         .collect()
 }
 
-fn get_accessible_paper_positions(grid: &Vec<Vec<Cell>>) -> Vec<(usize, usize)> {
+fn get_accessible_paper_positions(grid: &[Vec<Cell>]) -> Vec<(usize, usize)> {
     grid.iter()
         .enumerate()
-        .map(|(y, row)| {
+        .flat_map(|(y, row)| {
             row.iter()
                 .enumerate()
                 .filter(move |(x, cell)| {
-                    **cell == Cell::Paper && count_surrounding_papers(&grid, *x, y) < 4
+                    **cell == Cell::Paper && count_surrounding_papers(grid, *x, y) < 4
                 })
                 .map(move |(x, _)| (x, y))
         })
-        .flatten()
         .collect()
 }
 
-fn count_surrounding_papers(grid: &Vec<Vec<Cell>>, x: usize, y: usize) -> usize {
+fn count_surrounding_papers(grid: &[Vec<Cell>], x: usize, y: usize) -> usize {
     let surrounding = [
         grid.get(y - 1).and_then(|row| row.get(x - 1)),
         grid.get(y - 1).map(|row| &row[x]),
