@@ -66,16 +66,16 @@ def "main generate" [
     try {
       http get --headers {cookie: $'session=(open SESSION | str trim)'} $'https://adventofcode.com/($date.year)/day/($date.day)/input'
     } catch {
-      if $in.debug =~ 'status code' {
-        let code = $in.debug | parse -r 'status code (\d+)' | get capture0.0
+      if $in.msg == 'Network failure' {
+        let code = $in.debug | parse -r 'Error is \\"(\d+)' | get capture0.0
         error make --unspanned {
           msg: $"Accessing 'https://adventofcode.com/($date.year)/day/($date.day)/input' failed with a status code of ($code)"
-          help: $"Using a browser, verify that you can access 'https://adventofcode.com' and that the session cookie in 'SESSION' is still valid"
+          help: $"Verify that you can access 'https://adventofcode.com' and that the session cookie in 'SESSION' is still valid"
         }
-      } else if $in.debug =~ 'Dns Failed' {
-        error make --unspanned {
+      } else if $in.msg == 'DNS Error' {
+        null | error make --unspanned {
           msg: $"Unable to access 'https://adventofcode.com/($date.year)/day/($date.day)/input'"
-          help: $"Verify that you can access 'https://adventofcode.com/($date.year)/day/($date.day)/input' using a browser"
+          help: $"Verify that you can access 'https://adventofcode.com/($date.year)/day/($date.day)/input'"
         }
       }
       $in.raw
