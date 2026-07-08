@@ -2,6 +2,7 @@ words = [
     "LSHIFT",
     "RSHIFT",
     "aeiou",
+    "akitas",
     "aoc",
     "clippy",
     "evaluable",
@@ -22,4 +23,5 @@ words = [
     "svr",
     "treefmt",
     "unspanned",
+    "vizslas",
 ]
