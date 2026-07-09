@@ -1,0 +1,15 @@
+{
+  inputs: [
+    'H => HO
+H => OH
+O => HH
+
+HOH'
+    'H => HO
+H => OH
+O => HH
+
+HOHOHO'
+  ]
+  outputs: [[first second]; [4 null] [7 null]]
+}
